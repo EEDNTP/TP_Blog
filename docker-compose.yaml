@@ -1,0 +1,31 @@
+services:
+  php:
+    build: # Fabrique une image à partir d'un Dockerfile
+      context: ./php # context = endroit où se trouve Dockerfile pour PHP
+    container_name: php_blog
+    ports:
+      - 8080:80 # 8080 port externe, 80 port dans l'image (EXPOSE 80)
+    volumes:
+      - ./app:/var/www/html # ./app dossier local des fichiers php, /var/www/html dossier dans le conteneur
+  
+  database:
+    image: mysql:8.0
+    container_name: mysql_blog
+    environment:
+      MYSQL_ROOT_PASSWORD: cequejeveux # paramètre obligatoire, mot de passe d'administration de mysql
+      MYSQL_DATABASE: blog
+      MYSQL_USER: blog_admin # On met ce qu'on veut
+      MYSQL_PASSWORD: azerty # On met ce qu'on veut
+    volumes:
+      - ./mysql:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin
+    environment:
+      PMA_HOST: database # Nom du service de base de données
+      PMA_USER: root
+      PMA_PASSWORD: cequejeveux # MYSQL_ROOT_PASSWORD
+    ports:
+      - 8081:80 # EXPOSE 80
+    depends_on:
+      - database # Démarre APRES database
