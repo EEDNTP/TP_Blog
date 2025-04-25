@@ -8,8 +8,12 @@
 </head>
 
 <body>
-    <main>
+<header>
+        <?php include_once 'includes/nav.php'; ?>
         <h1>Ajouter une catégorie</h1>
+    </header>
+
+    <main>
         <form action="add_category_treatment.php" method="post">
             <small>Seul le nom de la catégorie est obligatoire</small>
             <div>

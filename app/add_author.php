@@ -8,8 +8,12 @@
 </head>
 
 <body>
-    <main>
+    <header>
+        <?php include_once 'includes/nav.php'; ?>
         <h1>Ajouter un auteur</h1>
+    </header>
+
+    <main>
         <form action="add_author_treatment.php" method="post">
             <small>Tous les champs sont obligatoires</small>
             <div>
