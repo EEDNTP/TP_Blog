@@ -48,7 +48,12 @@ $authors = $stmt->fetchAll();
                         <!-- Affiche l'email de l'auteur en utilisant htmlspecialchars pour sécuriser l'affichage -->
                         <td><?= htmlspecialchars($author['email']); ?></td>
                         <!-- Lien pour voir les articles de l'auteur -->
-                        <td><a href="edit_author.php?id=<?= intval($author['id']); ?>">Modifier</a> - <a href="author_articles.php?id=<?= intval($author['id']); ?>">Voir les articles</a></td>
+                        <td>
+                            <a href="edit_author.php?id=<?= intval($author['id']); ?>">Modifier</a> - 
+                            <a href="author_articles.php?id=<?= intval($author['id']); ?>">Voir les articles</a> - <form action="delete_author.php?id=<?= intval($author['id']); ?>" method="post">
+                                <button type="submit">Supprimer</button>
+                            </form>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
