@@ -25,9 +25,6 @@ if (is_numeric($_GET['id'])) {
     // Récupère tous les articles de la catégorie
     $posts = $stmt->fetchAll();
 
-    // Affiche les résultats pour débogage
-    var_dump($posts);
-
     // Récupère le nom de la catégorie à partir du premier résultat et sécurise l'affichage avec htmlspecialchars
     $categoryName = htmlspecialchars($posts[0]['name']);
 }
@@ -42,8 +39,11 @@ if (is_numeric($_GET['id'])) {
 </head>
 
 <body>
-    <main>
+    <header>
+        <?php include_once 'includes/nav.php'; ?>
         <h1>Articles dans la catégorie <?= $categoryName ?></h1>
+    </header>
+    <main>
         <?php if (!isset($posts[0]['title'])): ?>
             <!-- Affiche un message si la catégorie n'a pas encore d'article -->
             <p>Cette catégorie ne contient pas encore d'article</p>

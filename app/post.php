@@ -59,6 +59,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             <!-- Affiche le contenu de l'article -->
             <?= $post['content'] ?>
         </div>
+
+        <section>
+            <h2>Commenter l'article</h2>
+            <form action="comment_treatment.php" method="post">
+                <div>
+                    <label for="comment">Commentaire</label>
+                    <textarea name="content" id="comment"></textarea>
+                </div>
+                <input type="hidden" name="id" value="<?= intval($post['id']); ?>">
+                <button type="submit">Envoyer</button>
+            </form>
+        </section>
     </main>
 </body>
 
