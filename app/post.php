@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             die('Article inexistant'); // Arrête le script et affiche un message d'erreur si le post n'existe pas
         }
 
-        // Prépare la requête SQL pour sélectionner les informations du post et de l'auteur associé
+        // Prépare la requête SQL pour sélectionner les commentaires
         $sql = "SELECT * FROM comments WHERE posts_id = :id ORDER BY created_at DESC;";
 
         // Prépare la requête SQL
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         // Exécute la requête
         $stmt->execute();
 
-        // Récupère les informations du post
+        // Récupère les informations des commentaires
         $comments = $stmt->fetchAll();
     }
 }
