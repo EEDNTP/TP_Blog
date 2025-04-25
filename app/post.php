@@ -28,6 +28,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         if (!$post) {
             die('Article inexistant'); // Arrête le script et affiche un message d'erreur si le post n'existe pas
         }
+
+        // Prépare la requête SQL pour sélectionner les informations du post et de l'auteur associé
+        $sql = "SELECT * FROM comments WHERE posts_id = :id ORDER BY created_at DESC;";
+
+        // Prépare la requête SQL
+        $stmt = $pdo->prepare($sql);
+
+        // Lie la valeur de l'identifiant à la requête en tant qu'entier
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+        // Exécute la requête
+        $stmt->execute();
+
+        // Récupère les informations du post
+        $comments = $stmt->fetchAll();
     }
 }
 ?>
@@ -70,6 +85,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 <input type="hidden" name="id" value="<?= intval($post['id']); ?>">
                 <button type="submit">Envoyer</button>
             </form>
+        </section>
+        <section>
+            <h2>Commentaires</h2>
+            <?php foreach ($comments as $comment): ?>
+                <article>
+                    <p><?= htmlspecialchars($comment['content']); ?></p>
+                    <p>Ecrit le <time datetime="<?= htmlspecialchars($comment['created_at']) ?>"><?= htmlspecialchars($comment['created_at']) ?></time></p>
+                </article>
+            <?php endforeach; ?>
         </section>
     </main>
 </body>
