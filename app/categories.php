@@ -47,7 +47,7 @@ $categories = $stmt->fetchAll();
 
                         <!-- Liens des actions -->
                         <td>
-                            <a href="edit_category.php?id=<?= intval($category['id']); ?>">Modifier</a> - 
+                            <a href="edit_category.php?id=<?= intval($category['id']); ?>">Modifier</a> - <a href="category_articles.php?id=<?= intval($category['id']); ?>">Voir les articles</a> -
                             <form action="delete_category.php?id=<?= intval($category['id']); ?>" method="post">
                                 <button type="submit">Supprimer</button>
                             </form>

@@ -1,14 +1,17 @@
 <?php
 // Vérifie si l'identifiant dans les paramètres GET est un nombre
 if (is_numeric($_GET['id'])) {
-    // Récupère l'identifiant de l'auteur
+    // Récupère l'identifiant de la catégorie
     $id = $_GET['id'];
 
     // Inclut le fichier de connexion à la base de données
     require_once 'includes/dbconnect.php';
 
-    // Prépare la requête SQL pour sélectionner les articles de l'auteur ainsi que ses informations personnelles
-    $sql = 'SELECT posts.title, posts.created_at, authors.lastname, authors.firstname FROM authors LEFT JOIN posts ON posts.authors_id = authors.id WHERE authors.id = :id;';
+    // Prépare la requête SQL pour sélectionner les articles de la catégorie ainsi que ses informations
+    $sql = 'SELECT posts.title, posts.created_at, categories.name FROM categories
+            LEFT JOIN posts_categories ON posts_categories.categories_id = categories.id
+            LEFT JOIN posts ON posts.id = posts_categories.posts_id
+            WHERE categories.id = :id;';
 
     // Prépare la requête SQL
     $stmt = $pdo->prepare($sql);
@@ -19,14 +22,15 @@ if (is_numeric($_GET['id'])) {
     // Exécute la requête
     $stmt->execute();
 
-    // Récupère tous les articles de l'auteur
+    // Récupère tous les articles de la catégorie
     $posts = $stmt->fetchAll();
 
-    // Récupère le nom et le prénom de l'auteur à partir du premier résultat
-    $authorLastname = htmlspecialchars($posts[0]['lastname']);
-    $authorFirstname = htmlspecialchars($posts[0]['firstname']);
-}
+    // Affiche les résultats pour débogage
+    var_dump($posts);
 
+    // Récupère le nom de la catégorie à partir du premier résultat et sécurise l'affichage avec htmlspecialchars
+    $categoryName = htmlspecialchars($posts[0]['name']);
+}
 ?>
 <!doctype html>
 <html lang="fr">
@@ -34,15 +38,15 @@ if (is_numeric($_GET['id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Articles écrits par <?= $authorLastname ?> <?= $authorFirstname ?> </title>
+    <title>Articles dans la catégorie <?= $categoryName ?></title>
 </head>
 
 <body>
     <main>
-        <h1>Articles écrits par <?= htmlspecialchars($authorLastname) ?> <?= htmlspecialchars($authorFirstname) ?></h1>
+        <h1>Articles dans la catégorie <?= $categoryName ?></h1>
         <?php if (!isset($posts[0]['title'])): ?>
-            <!-- Affiche un message si l'auteur n'a pas encore écrit d'article -->
-            <p>Cet auteur n'a pas encore écrit d'article</p>
+            <!-- Affiche un message si la catégorie n'a pas encore d'article -->
+            <p>Cette catégorie ne contient pas encore d'article</p>
         <?php else: ?>
             <?php foreach ($posts as $post): ?>
                 <article>
